@@ -20,3 +20,11 @@ where = ["src"]
 dev = [
     "pytest>=8.0.0",
 ]
+
+[tool.pytest.ini_options]
+markers = [
+    "unit: Unit tests ",
+    "integration: Integration tests with dev-environment",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

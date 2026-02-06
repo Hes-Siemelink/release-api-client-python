@@ -1,9 +1,12 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from com.xebialabs.xlrelease.domain import Release
 
 
+@pytest.mark.unit
 def test_release_json():
     # Load release.json
     test_dir = Path(__file__).parent
