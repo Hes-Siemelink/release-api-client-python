@@ -5,10 +5,7 @@ from typing import Any, List, Dict, Optional, Collection
 
 # Forward imports for type hints (adjust actual import paths if these Python modules exist)
 if False:  # pragma: no cover
-    from com.xebialabs.xlrelease.domain import Variable, TeamView, BasicReleaseView
-    from com.xebialabs.xlrelease.domain import Release
-    from com.xebialabs.xlrelease.domain import Phase
-    from com.xebialabs.xlrelease.domain import Task
+    from com.xebialabs.xlrelease.domain import Release, Phase, Task, Variable, TeamView, BasicReleaseView
     from com.xebialabs.xlrelease.api.v1.forms import AbortRelease, ReleasesFilters, VariableOrValue
     from com.xebialabs.xlrelease.repository import PhaseVersion
     from com.xebialabs.xlrelease.search import ReleaseCountResults, ReleaseFullSearchResult
