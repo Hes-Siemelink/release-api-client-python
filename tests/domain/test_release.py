@@ -34,4 +34,3 @@ def test_release_json():
 
     # Check access of properties are present in the JSON but not in the model
     assert task.capabilities == ["remote"]
- 
