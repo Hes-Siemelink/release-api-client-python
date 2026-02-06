@@ -1,7 +1,7 @@
 from .configuration_item import ConfigurationItem
-from .plan_items import Phase
-from .plan_items import PlanItem
-from .plan_items import Release
-from .plan_items import Task
+from com.xebialabs.xlrelease.domain.phase import Phase
+from .plan_item import PlanItem
+from com.xebialabs.xlrelease.domain.release import Release
+from com.xebialabs.xlrelease.domain.task import Task
 
 __all__ = ["ConfigurationItem", "Phase", "PlanItem", "Release", "Task"]
