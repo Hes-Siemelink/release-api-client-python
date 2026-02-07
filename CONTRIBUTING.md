@@ -5,19 +5,6 @@
 When adding methods to API classes (e.g., `FolderApi`, `ReleaseApi`, `PhaseApi`), **you MUST preserve Java naming
 conventions**. This is critical for backwards compatibility with existing Jython scripts that depend on this library.
 
-### Why Java Naming Conventions?
-
-This Python library is used by Jython scripts (Python 2 running on the JVM) that were originally developed against Java
-clients. To maintain compatibility, the API method signatures must match the original Java implementations exactly.
-
-### Guidelines
-
-1. **Method Names**: Use camelCase with the first letter lowercase (e.g., `getFolder`, `addFolder`, `listRoot`)
-2. **Parameter Names**: Use camelCase to match Java conventions (e.g., `folderId`, `resultsPerPage`,
-   `decorateWithPermissions`)
-3. **Documentation**: Keep JavaDoc-style docstrings converted to Python format
-4. **Return Types**: Ensure return types match the Java implementation
-
 ### Example
 
 When implementing a Java API method like:
@@ -53,19 +40,42 @@ def listRoot(
     # Implementation
 ```
 
-### Note on Parameter Names in Docstrings
+## Domain Objects Return Type Requirement
 
-While method and parameter names must follow Java conventions for compatibility, parameter documentation in docstrings
-should be clear and Pythonic. Refer to parameters by their exact Java-style names as they appear in the method
-signature.
+When implementing endpoints on API classes, **methods MUST return domain objects, NOT plain dictionaries**. Use the
+`from_response()` or `from_response_to_list()` methods to convert raw API responses to properly typed domain objects.
 
-## Testing
+### Why This Matters
 
-- Add integration tests in `tests/integration/` for API methods
-- Add unit tests in `tests/unit/` for business logic
-- All tests should pass before submitting a pull request
+- **Type Safety**: Domain objects provide IDE autocomplete and static type checking
+- **Data Validation**: Domain objects enforce data validation rules
+- **Consistency**: All API methods should follow the same pattern for predictable behavior
 
-## Code Style
+### Example
 
-Follow PEP 8 conventions for Python code except where Java naming conventions are required for API compatibility.
+**❌ INCORRECT - Returns plain dict:**
+
+```python
+def getFolder(self, folderId: str) -> dict:
+    response = self.api.get(f"/api/v1/folders/{folderId}")
+    return response  # Wrong! Returns dict
+```
+
+**✅ CORRECT - Returns domain object:**
+
+```python
+def getFolder(self, folderId: str) -> Folder:
+    response = self.api.get(f"/api/v1/folders/{folderId}")
+    return Folder.from_response(response)  # Correct! Returns Folder object
+```
+
+### For List Returns
+
+Use `from_response_to_list()` for endpoints that return collections:
+
+```python
+def listRoot(self, page: int | None = None) -> list[Folder]:
+    response = self.api.get("/api/v1/folders/list", params={"page": page})
+    return Folder.from_response_to_list(response)  # Returns list[Folder]
+```
 
