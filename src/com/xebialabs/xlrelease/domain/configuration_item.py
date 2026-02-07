@@ -2,7 +2,7 @@ import json
 from typing import Any
 
 from pydantic import BaseModel
-from requests import Response
+from requests import Response, HTTPError
 
 
 class ConfigurationItem(BaseModel):
@@ -67,11 +67,11 @@ class ConfigurationItem(BaseModel):
     @classmethod
     def from_response(cls, response: Response) -> "ConfigurationItem":
         if response.status_code != 200:
-            raise ValueError(f"{response.status_code}: {response.text}")
+            raise HTTPError(f"{response.status_code}: {response.text}")
         return cls.from_json(response.json())
 
     @classmethod
     def from_response_to_list(cls, response: Response) -> list["ConfigurationItem"]:
         if response.status_code != 200:
-            raise ValueError(f"{response.status_code}: {response.text}")
+            raise HTTPError(f"{response.status_code}: {response.text}")
         return [cls.from_json(item) for item in response.json()]

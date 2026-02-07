@@ -92,3 +92,14 @@ class FolderApi(ABC):
 
         response = self.api.get("/api/v1/folders/find", params=params)
         return Folder.from_response(response)
+
+    def moveTemplate(self, folderId: str, templateId: str, mergePermissions: bool = False) -> None:
+        """
+        Move a template to another folder.
+    
+        :param folderId: the target folder the template will be moved to
+        :param templateId: the id of the template to be moved
+        :param mergePermissions: merge permissions. Defaults to False if None
+        """
+        params = {"mergePermissions": mergePermissions}
+        self.api.post(f"/api/v1/folders/{folderId}/templates/{templateId}", params=params)
