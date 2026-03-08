@@ -1,6 +1,8 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Optional
+
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
 from pydantic import Field
 
 from com.xebialabs.xlrelease.domain import ConfigurationItem
@@ -102,7 +104,6 @@ class Release(PlanItem):
     createdFromTrigger: bool = False
     scriptUsername: Optional[str] = None
     scriptUserPassword: Optional[str] = None
-    extensions: List[Any] = Field(default_factory=list)
     startedFromTaskId: Optional[str] = None
     parentReleaseId: Optional[str] = None
     autoStart: bool = False
@@ -116,9 +117,6 @@ class Release(PlanItem):
     defaultTargetFolderId: Optional[str] = None
     allowTargetFolderOverride: bool = True
     allowRestartInExecutionView: bool = True
-    archived: bool = False
-    ciUid: Optional[int] = None
-    tenantId: Optional[str] = None
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
