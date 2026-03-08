@@ -22,6 +22,33 @@ class TemplateApi(ABC):
 
         return Release.from_response(response)
 
+    def getTemplates(
+        self,
+        title: str | None = None,
+        tags: list[str] | None = None,
+        kind: str = "RELEASE",
+        page: int = 0,
+        resultsPerPage: int = 100,
+    ) -> list[Release]:
+        """
+        Returns the list of release or workflow templates that are visible to the current user.
+
+        :param title: an optional search filter containing the title of the template
+        :param tags: an optional search filter containing list of template tags
+        :param kind: the kind of template. Default value is RELEASE
+        :param page: the page of results to return. Default value is 0
+        :param resultsPerPage: the number of results per page. Default value is 100. Maximum value is 100
+        :return: a list of release templates
+        """
+        params: dict = {"kind": kind, "page": page, "resultsPerPage": resultsPerPage}
+        if title is not None:
+            params["title"] = title
+        if tags is not None:
+            params["tag"] = tags
+        response = self.api.get("/api/v1/templates", params=params)
+
+        return Release.from_response_to_list(response)
+
     def createTemplate(self, template: Release, folderId: str | None = None) -> Release:
         """
         Creates a new template.

@@ -32,3 +32,20 @@ def test_create_and_delete_template(template_api, test_folder):
 
     with pytest.raises(HTTPError):
         template_api.getTemplate(created.id)
+
+
+@pytest.mark.integration
+def test_get_templates(template_api):
+    templates = template_api.getTemplates()
+
+    assert isinstance(templates, list)
+    assert len(templates) > 0
+    assert all(isinstance(t, Release) for t in templates)
+
+
+@pytest.mark.integration
+def test_get_templates_by_title(template_api):
+    templates = template_api.getTemplates(title="Test Template")
+
+    assert len(templates) >= 1
+    assert any(t.title == "Test Template" for t in templates)
